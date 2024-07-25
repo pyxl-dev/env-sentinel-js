@@ -1,8 +1,8 @@
 require('dotenv').config(); // If you're using dotenv
-const envGuard = require('../index'); // Adjust the path to point to the env-guard package
+const envSentinel = require('../index'); // Adjust the path to point to the env-sentinel package
 
-// Call envGuard with verbose option
-envGuard({ verbose: true });
+// Call envSentinel with verbose option
+envSentinel({ verbose: true });
 
 // Rest of your application code
 console.log(`Server running on port ${process.env.PORT}`);
