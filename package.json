@@ -1,0 +1,22 @@
+{
+  "name": "env-sentinel",
+  "version": "1.0.0",
+  "description": "A package to automatically check and verify process.env variables",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "environment",
+    "variables",
+    "validation",
+    "process.env"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/parser": "^7.22.5",
+    "@babel/traverse": "^7.22.5",
+    "glob": "^10.2.7"
+  }
+}
