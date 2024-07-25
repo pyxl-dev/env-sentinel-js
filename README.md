@@ -64,4 +64,4 @@ Contributions are welcome! Please open an issue or submit a pull request on the 
 
 ## Author
 
-env-sentinel was created by [Your Name](https://github.com/YoanAncelly).
+env-sentinel was created by [Yoan Ancelly](https://github.com/YoanAncelly).
