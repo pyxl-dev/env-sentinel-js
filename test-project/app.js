@@ -1,13 +1,22 @@
 require('dotenv').config(); // If you're using dotenv
-const envGuard = require('../index.js');
+const envGuard = require('../index'); // Adjust the path to point to the env-guard package
 
 // Call envGuard with verbose option
 envGuard({ verbose: true });
 
 // Rest of your application code
-const express = require('express');
-const app = express();
+console.log(`Server running on port ${process.env.PORT}`);
+console.log(`Database URL: ${process.env.DATABASE_URL}`);
+console.log(`API Key: ${process.env.API_KEY}`);
+console.log(`Node Environment: ${process.env.NODE_ENV}`);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
-});
+// Example of using an environment variable with a default value
+const debugMode = process.env.DEBUG_MODE || 'false';
+console.log(`Debug Mode: ${debugMode}`);
+
+// Example of using an environment variable in a condition
+if (process.env.ENABLE_FEATURE === 'true') {
+  console.log('Special feature enabled');
+} else {
+  console.log('Special feature disabled');
+}
