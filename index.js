@@ -47,7 +47,7 @@ function findProcessEnvCalls(directory, verbose = false) {
   return Array.from(envVars);
 }
 
-function envGuard(options = {}) {
+function envSentinel(options = {}) {
   const { directory = process.cwd(), verbose = false } = options;
   log(`Scanning directory: ${directory}`, verbose);
 
@@ -80,4 +80,4 @@ function envGuard(options = {}) {
   log('Environment check completed successfully', verbose);
 }
 
-module.exports = envGuard;
+module.exports = envSentinel;
