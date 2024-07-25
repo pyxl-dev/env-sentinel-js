@@ -12,9 +12,9 @@ function log(message, verbose) {
 
 function findProcessEnvCalls(directory, verbose = false) {
   const envVars = new Set();
-  const files = glob.sync('**/*.js', {
+  const files = glob.sync('**/*.{js,ts}', {
     cwd: directory,
-    ignore: ['node_modules/**', 'index.js']
+    ignore: ['node_modules/**']
   });
 
   log(`Scanning files: ${files.join(', ')}`, verbose);
