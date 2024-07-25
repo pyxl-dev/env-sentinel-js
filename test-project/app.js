@@ -1,7 +1,8 @@
 require('dotenv').config(); // If you're using dotenv
 const envGuard = require('../index.js');
 
-envGuard(); // This will automatically check all process.env calls in your project
+// Call envGuard with verbose option
+envGuard({ verbose: true });
 
 // Rest of your application code
 const express = require('express');

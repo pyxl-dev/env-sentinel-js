@@ -4,18 +4,24 @@ const glob = require('glob');
 const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 
-function findProcessEnvCalls(directory) {
+function log(message, verbose) {
+  if (verbose) {
+    console.log(message);
+  }
+}
+
+function findProcessEnvCalls(directory, verbose = false) {
   const envVars = new Set();
   const files = glob.sync('**/*.js', {
     cwd: directory,
-    ignore: ['node_modules/**', 'index.js'] // Ignore index.js as well
+    ignore: ['node_modules/**', 'index.js']
   });
 
-  console.log('Scanning files:', files);
+  log(`Scanning files: ${files.join(', ')}`, verbose);
 
   files.forEach(file => {
     const filePath = path.join(directory, file);
-    console.log('Scanning file:', filePath);
+    log(`Scanning file: ${filePath}`, verbose);
     const content = fs.readFileSync(filePath, 'utf-8');
     const ast = parser.parse(content, { sourceType: 'module' });
 
@@ -28,9 +34,8 @@ function findProcessEnvCalls(directory) {
           path.node.property.type === 'Identifier'
         ) {
           const varName = path.node.property.name;
-          // Exclude 'varName' and ensure it's not part of a larger expression
           if (varName !== 'varName' && !path.parent.type.includes('Assignment')) {
-            console.log('Found env var:', varName, 'in file:', filePath);
+            log(`Found env var: ${varName} in file: ${filePath}`, verbose);
             envVars.add(varName);
           }
         }
@@ -38,19 +43,24 @@ function findProcessEnvCalls(directory) {
     });
   });
 
-  console.log('Detected environment variables:', Array.from(envVars));
+  log(`Detected environment variables: ${Array.from(envVars).join(', ')}`, verbose);
   return Array.from(envVars);
 }
 
-function envGuard(directory = process.cwd()) {
-  console.log('Scanning directory:', directory);
-  const requiredEnvVars = findProcessEnvCalls(directory);
+function envGuard(options = {}) {
+  const { directory = process.cwd(), verbose = false } = options;
+  log(`Scanning directory: ${directory}`, verbose);
+
+  const requiredEnvVars = [
+    ...findProcessEnvCalls(directory, verbose),
+    ...findProcessEnvCalls(path.join(directory, 'test-project'), verbose)
+  ];
   const missingVars = [];
   const emptyVars = [];
 
   for (const varName of requiredEnvVars) {
     const value = process.env[varName];
-    console.log('Checking var:', varName, 'value:', value);
+    log(`Checking var: ${varName}, value: ${value}`, verbose);
 
     if (value === undefined || value === null) {
       missingVars.push(varName);
@@ -67,7 +77,7 @@ function envGuard(directory = process.cwd()) {
     console.warn(`Warning: The following environment variables are empty: ${emptyVars.join(', ')}`);
   }
 
-  console.log('Environment check completed successfully');
+  log('Environment check completed successfully', verbose);
 }
 
 module.exports = envGuard;
